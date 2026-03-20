@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SaMaCraft – Startseite</title>
+  <link rel="stylesheet" href="/static/style.css">
+  <script defer src="/static/script.js"></script>
+</head>
+<body>
+  <header>
+    <div class="logo">SaMaCraft</div>
+    <nav>
+      <button onclick="location.href='/'" class="nav-btn active">Startseite</button>
+      <button onclick="location.href='/rules.html'" class="nav-btn">Regelwerk</button>
+      <button onclick="location.href='/team.html'" class="nav-btn">Team</button>
+      <button onclick="location.href='/news'" class="nav-btn">Neuigkeiten</button>
+      <button onclick="location.href='/join.html'" class="nav-btn">Beitreten</button>
+    </nav>
+    <div class="right-controls">
+      <button id="theme-toggle" title="Theme wechseln">🌗</button>
+      <button class="hamburger" aria-label="Menü öffnen">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </header>
+
+  <!-- Mobile Nav -->
+  <div class="mobile-nav">
+    <button onclick="location.href='/'" class="nav-btn active">Startseite</button>
+    <button onclick="location.href='/rules.html'" class="nav-btn">Regelwerk</button>
+    <button onclick="location.href='/team.html'" class="nav-btn">Team</button>
+    <button onclick="location.href='/news'" class="nav-btn">Neuigkeiten</button>
+    <button onclick="location.href='/join.html'" class="nav-btn">Beitreten</button>
+  </div>
+
+  <main>
+    <section class="intro">
+      <h1>Willkommen auf SaMaCraft</h1>
+      <p>Hier findest du alle Informationen, Regeln und Neuigkeiten rund um den SaMaCraft Minecraft Server.</p>
+      <button class="btn" onclick="location.href='rules.html'">Zum Regelwerk →</button>
+    </section>
+
+    <section class="server-info">
+      <h2>🎮 Jetzt Mitspielen!</h2>
+      <div class="ip-box">
+        <p><strong>Server IP:</strong> <span id="server-ip">samacraft.de</span></p>
+        <button class="btn small" onclick="copyIP()">IP Kopieren</button>
+      </div>
+    </section>
+
+    <section class="news-preview">
+      <h2>📰 Neuigkeiten</h2>
+      <div class="news-container" id="news-preview-container">
+        <div style="text-align:center;padding:30px;color:var(--muted)">Lade…</div>
+      </div>
+      <button class="btn" onclick="location.href='/news'">Alle News →</button>
+    </section>
+
+    <section class="features">
+      <h2>✨ Was macht SaMaCraft besonders?</h2>
+      <div class="feature-list">
+        <div class="feature-item">
+          <h3>🌍 Survival mit Qualität</h3>
+          <p>Keine Pay2Win-Mechaniken – echtes Survival-Feeling, mit liebevoll gestalteten Systemen.</p>
+        </div>
+        <div class="feature-item">
+          <h3>⚖️ Faires Wirtschaftssystem</h3>
+          <p>Ein durchdachtes Economy-System mit Shops und Marktplatz für Spieler.</p>
+        </div>
+        <div class="feature-item">
+          <h3>🛡️ Aktives & faires Team</h3>
+          <p>Moderation auf Augenhöhe – freundlich, präsent, fair und ohne Abuse.</p>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <p>© 2025 SaMaCraft | Designed by MaxBrassLoud</p>
+  </footer>
+
+  <script>
+    function copyIP() {
+      navigator.clipboard.writeText("samacraft.de");
+      alert("IP kopiert!");
+    }
+
+    // Neueste 2 News als Vorschau laden
+    const TYPE_COLORS = {
+      update: "#ff9800", changelog: "#2196f3", event: "#8e24aa",
+      info: "#00897b", alert: "#e53935"
+    };
+    const TYPE_LABELS = {
+      update: "Update", changelog: "Changelog", event: "Event",
+      info: "Info", alert: "⚠️ Warnung"
+    };
+
+    (async () => {
+      const container = document.getElementById("news-preview-container");
+      try {
+        const res = await fetch("/api/news");
+        const news = await res.json();
+        const preview = news.slice(0, 2);
+        container.innerHTML = "";
+        preview.forEach(item => {
+          const color = TYPE_COLORS[item.type] || "#888";
+          const label = TYPE_LABELS[item.type] || item.type;
+          const d = new Date(item.date);
+          const dateStr = d.toLocaleDateString("de-DE", { day: "numeric", month: "long", year: "numeric" });
+          const short = item.content.length > 120 ? item.content.slice(0, 120) + "…" : item.content;
+          const card = document.createElement("div");
+          card.className = "news-card";
+          card.innerHTML = `
+            <div class="news-header">
+              <span class="tag" style="background:${color}">${label}</span>
+              <span class="date">${dateStr}</span>
+            </div>
+            <h3>${item.title}</h3>
+            <p>${short}</p>
+            <button class="btn small" onclick="location.href='/news#${item.id}'">Mehr lesen</button>
+          `;
+          container.appendChild(card);
+        });
+      } catch (e) {
+        container.innerHTML = `<p style="color:var(--muted);text-align:center">News konnten nicht geladen werden.</p>`;
+      }
+    })();
+  </script>
+</body>
+</html>

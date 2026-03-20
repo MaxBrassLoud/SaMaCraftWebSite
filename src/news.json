@@ -1,0 +1,48 @@
+[
+  {
+    "id": "server-start",
+    "type": "update",
+    "title": "Server Start!",
+    "date": "2025-10-31",
+    "content": "Am 31. Oktober ab 19:45 wird der Server geöffnet und um 20:00 Uhr ist der offizielle Start. Am Starttermin sind folgende Features verfügbar: Es gibt einen Shop, in dem man diverse Items kaufen bzw. verkaufen kann, um Geld zu bekommen. Der Shop ist unter /shop erreichbar. Ein weiteres Feature ist /stats, in dem man seine Statistiken sieht. Das Serverteam wünscht am ersten Tag des Servers viel Spaß!",
+    "download": null
+  },
+  {
+    "id": "changelog-1-0",
+    "type": "changelog",
+    "title": "Changelog SaMaCraft 1.0",
+    "date": "2025-10-31",
+    "content": "Der Minecraft Server ist in der Version 1.21.8. Die Serversoftware ist Paper. Ansonsten wurden keine spielverändernden Änderungen vorgenommen, außer dem Deaktivieren des gesamten Minecraft Vanilla Trading-Systems.",
+    "download": null
+  },
+  {
+    "id": "regelwerk-v1",
+    "type": "info",
+    "title": "Regelwerk v1.0 veröffentlicht",
+    "date": "2025-10-30",
+    "content": "Das offizielle SaMaCraft Regelwerk wurde veröffentlicht. Alle Spieler sind verpflichtet, die Regeln zu lesen und einzuhalten. Bei Fragen stehen die Moderatoren jederzeit zur Verfügung. Das vollständige Regelwerk ist auch als PDF-Download verfügbar.",
+    "download": {
+      "label": "Regelwerk als PDF herunterladen",
+      "file": "regelwerk_v1.txt"
+    }
+  },
+  {
+    "id": "halloween-event",
+    "type": "event",
+    "title": "🎃 Halloween Event",
+    "date": "2025-10-31",
+    "content": "Passend zum Serverstart gibt es ein exklusives Halloween-Event! Suche nach speziellen Kürbissen in der Welt und erhalte einzigartige Belohnungen. Das Event läuft bis zum 3. November 2025. Viel Erfolg beim Suchen!",
+    "download": {
+      "label": "Event-Details herunterladen",
+      "file": "halloween_event.txt"
+    }
+  },
+  {
+    "id": "wartung-nov",
+    "type": "alert",
+    "title": "⚠️ Wartungsarbeiten geplant",
+    "date": "2025-11-05",
+    "content": "Am 5. November zwischen 14:00 und 16:00 Uhr wird der Server für Wartungsarbeiten offline sein. In dieser Zeit werden Performance-Verbesserungen und Plugin-Updates eingespielt. Bitte plant eure Spielzeit entsprechend.",
+    "download": null
+  }
+]

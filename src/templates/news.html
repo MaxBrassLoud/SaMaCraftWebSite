@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SaMaCraft – Neuigkeiten</title>
+  <link rel="stylesheet" href="/static/style.css">
+  <script defer src="/static/script.js"></script>
+  <style>
+    /* Filter-Bar */
+    .news-filter-bar {
+      max-width: 900px;
+      margin: 20px auto 0;
+      padding: 0 16px;
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      align-items: center;
+    }
+    .filter-btn {
+      font-size: 0.8em;
+      padding: 5px 14px;
+      border-radius: 20px;
+      background: var(--sidebar-bg);
+      color: var(--text);
+      border: 1px solid var(--border);
+      box-shadow: none;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.4px;
+      transition: background 0.2s, color 0.2s, border-color 0.2s;
+    }
+    .filter-btn:hover, .filter-btn.active {
+      background: var(--accent);
+      color: white;
+      border-color: var(--accent);
+      transform: none;
+      box-shadow: 0 2px 8px rgba(30,144,255,0.3);
+    }
+    .filter-btn[data-type="update"].active   { background: #ff9800; border-color: #ff9800; }
+    .filter-btn[data-type="changelog"].active{ background: #2196f3; border-color: #2196f3; }
+    .filter-btn[data-type="event"].active    { background: #8e24aa; border-color: #8e24aa; }
+    .filter-btn[data-type="alert"].active    { background: #e53935; border-color: #e53935; }
+    .filter-btn[data-type="info"].active     { background: #00897b; border-color: #00897b; }
+
+    /* Download-Button im News-Card */
+    .download-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      margin-top: 14px;
+      font-size: 0.82em;
+      padding: 7px 14px;
+      background: var(--sidebar-bg);
+      color: var(--accent);
+      border: 1px solid var(--accent);
+      box-shadow: none;
+      border-radius: 8px;
+      font-weight: 700;
+      transition: background 0.2s, color 0.2s;
+    }
+    .download-btn:hover {
+      background: var(--accent);
+      color: white;
+      transform: none;
+      box-shadow: 0 2px 8px rgba(30,144,255,0.3);
+    }
+    .download-btn svg {
+      flex-shrink: 0;
+    }
+
+    /* No-results */
+    .no-results {
+      text-align: center;
+      padding: 60px 20px;
+      color: var(--muted);
+      display: none;
+    }
+    .no-results.visible { display: block; }
+
+    /* News-Count Badge */
+    .news-count {
+      font-size: 0.85em;
+      color: var(--muted);
+      margin-left: auto;
+    }
+
+    /* Fade-in für Cards */
+    .news-card {
+      animation: fadeUp 0.3s ease both;
+    }
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(12px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    .news-card.hidden { display: none; }
+
+    /* Typ-spezifische Akzentfarben */
+    .news-card[data-type="update"]    { border-left-color: #ff9800; }
+    .news-card[data-type="changelog"] { border-left-color: #2196f3; }
+    .news-card[data-type="event"]     { border-left-color: #8e24aa; }
+    .news-card[data-type="alert"]     { border-left-color: #e53935; }
+    .news-card[data-type="info"]      { border-left-color: #00897b; }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="logo">SaMaCraft</div>
+    <nav>
+      <button onclick="location.href='/'" class="nav-btn">Startseite</button>
+      <button onclick="location.href='/rules.html'" class="nav-btn">Regelwerk</button>
+      <button onclick="location.href='/team.html'" class="nav-btn">Team</button>
+      <button onclick="location.href='/news'" class="nav-btn active">Neuigkeiten</button>
+      <button onclick="location.href='/join.html'" class="nav-btn">Beitreten</button>
+    </nav>
+    <div class="right-controls">
+      <button id="theme-toggle" title="Theme wechseln">🌗</button>
+      <button class="hamburger" aria-label="Menü öffnen">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </header>
+
+  <div class="mobile-nav">
+    <button onclick="location.href='/'" class="nav-btn">Startseite</button>
+    <button onclick="location.href='/rules.html'" class="nav-btn">Regelwerk</button>
+    <button onclick="location.href='/team.html'" class="nav-btn">Team</button>
+    <button onclick="location.href='/news'" class="nav-btn active">Neuigkeiten</button>
+    <button onclick="location.href='/join.html'" class="nav-btn">Beitreten</button>
+  </div>
+
+  <main style="padding-top: 80px;">
+    <!-- Filter-Bar -->
+    <div class="news-filter-bar">
+      <button class="filter-btn active" data-type="all">Alle</button>
+      <button class="filter-btn" data-type="update">Update</button>
+      <button class="filter-btn" data-type="changelog">Changelog</button>
+      <button class="filter-btn" data-type="event">Event</button>
+      <button class="filter-btn" data-type="info">Info</button>
+      <button class="filter-btn" data-type="alert">Warnung</button>
+      <span class="news-count" id="news-count"></span>
+    </div>
+
+    <!-- News werden hier per JS eingefügt -->
+    <div class="news-container" id="news-container">
+      <div style="text-align:center; padding: 60px 20px; color: var(--muted);">
+        Lade Neuigkeiten…
+      </div>
+    </div>
+
+    <div class="no-results" id="no-results">
+      Keine Neuigkeiten in dieser Kategorie gefunden.
+    </div>
+  </main>
+
+  <footer>
+    <p>© 2025 SaMaCraft | Designed by MaxBrassLoud</p>
+  </footer>
+
+  <script>
+    // ─── News laden ────────────────────────────────────────────────────────────
+    const TYPE_LABELS = {
+      update:    { label: "Update",    color: "#ff9800" },
+      changelog: { label: "Changelog", color: "#2196f3" },
+      event:     { label: "Event",     color: "#8e24aa" },
+      info:      { label: "Info",      color: "#00897b" },
+      alert:     { label: "⚠️ Warnung", color: "#e53935" },
+    };
+
+    function formatDate(dateStr) {
+      const d = new Date(dateStr);
+      return d.toLocaleDateString("de-DE", { day: "numeric", month: "long", year: "numeric" });
+    }
+
+    function buildDownloadBtn(download) {
+      if (!download) return "";
+      return `
+        <a href="/api/news/download/${encodeURIComponent(download.file)}"
+           class="download-btn"
+           download>
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none"
+               stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+            <polyline points="7 10 12 15 17 10"/>
+            <line x1="12" y1="15" x2="12" y2="3"/>
+          </svg>
+          ${download.label}
+        </a>`;
+    }
+
+    function buildCard(item) {
+      const typeInfo = TYPE_LABELS[item.type] || { label: item.type, color: "#888" };
+      const card = document.createElement("div");
+      card.className = "news-card";
+      card.dataset.type = item.type;
+      if (item.id) card.id = item.id;
+
+      card.innerHTML = `
+        <div class="news-header">
+          <span class="tag" style="background:${typeInfo.color}">${typeInfo.label}</span>
+          <span class="date">${formatDate(item.date)}</span>
+        </div>
+        <h2>${item.title}</h2>
+        <p>${item.content}</p>
+        ${buildDownloadBtn(item.download)}
+      `;
+      return card;
+    }
+
+    let allNews = [];
+
+    async function loadNews() {
+      const container = document.getElementById("news-container");
+      try {
+        const res = await fetch("/api/news");
+        if (!res.ok) throw new Error("Fehler beim Laden");
+        allNews = await res.json();
+        renderNews("all");
+      } catch (e) {
+        container.innerHTML = `<div style="text-align:center;padding:40px;color:var(--muted)">
+          Neuigkeiten konnten nicht geladen werden.<br><small>${e.message}</small>
+        </div>`;
+      }
+    }
+
+    function renderNews(filter) {
+      const container = document.getElementById("news-container");
+      const noResults = document.getElementById("no-results");
+      const countEl = document.getElementById("news-count");
+      container.innerHTML = "";
+
+      const filtered = filter === "all"
+        ? allNews
+        : allNews.filter(n => n.type === filter);
+
+      if (filtered.length === 0) {
+        noResults.classList.add("visible");
+        countEl.textContent = "";
+      } else {
+        noResults.classList.remove("visible");
+        countEl.textContent = `${filtered.length} Eintra${filtered.length === 1 ? "g" : "äge"}`;
+        filtered.forEach((item, i) => {
+          const card = buildCard(item);
+          card.style.animationDelay = `${i * 60}ms`;
+          container.appendChild(card);
+        });
+      }
+
+      // Anchor aus URL öffnen (z.B. news.html#Start)
+      const hash = location.hash.slice(1);
+      if (hash) {
+        setTimeout(() => {
+          const el = document.getElementById(hash);
+          if (el) el.scrollIntoView({ behavior: "smooth", block: "start" });
+        }, 100);
+      }
+    }
+
+    // ─── Filter-Buttons ────────────────────────────────────────────────────────
+    document.querySelectorAll(".filter-btn").forEach(btn => {
+      btn.addEventListener("click", () => {
+        document.querySelectorAll(".filter-btn").forEach(b => b.classList.remove("active"));
+        btn.classList.add("active");
+        renderNews(btn.dataset.type);
+      });
+    });
+
+    loadNews();
+  </script>
+</body>
+</html>

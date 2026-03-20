@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SaMaCraft – Team</title>
+  <link rel="stylesheet" href="/static/style.css">
+  <script defer src="/static/script.js"></script>
+</head>
+<body>
+  <header>
+    <div class="logo">SaMaCraft</div>
+    <nav>
+      <button onclick="location.href='/'" class="nav-btn">Startseite</button>
+      <button onclick="location.href='/rules.html'" class="nav-btn">Regelwerk</button>
+      <button onclick="location.href='/team.html'" class="nav-btn active">Team</button>
+      <button onclick="location.href='/news'" class="nav-btn">Neuigkeiten</button>
+      <button onclick="location.href='/join.html'" class="nav-btn">Beitreten</button>
+    </nav>
+    <div class="right-controls">
+      <button id="hamburger" title="Menü" aria-label="Menü öffnen">
+        <span></span><span></span><span></span>
+      </button>
+      <button id="theme-toggle" title="Theme wechseln">🌗</button>
+    </div>
+  </header>
+
+  <div id="mobile-nav">
+    <button onclick="location.href='/'" class="nav-btn">Startseite</button>
+    <button onclick="location.href='/rules.html'" class="nav-btn">Regelwerk</button>
+    <button onclick="location.href='/team.html'" class="nav-btn active">Team</button>
+    <button onclick="location.href='/news'" class="nav-btn">Neuigkeiten</button>
+    <button onclick="location.href='/join.html'" class="nav-btn">Beitreten</button>
+  </div>
+
+  <main class="content">
+    <h2>Unser Team</h2>
+    <p>Das SaMaCraft-Team sorgt für einen fairen, freundlichen und spannenden Serverbetrieb. Hier findest du alle aktuellen Teammitglieder.</p>
+
+    <div class="team-grid">
+      <div class="team-card admin">
+        <img src="img/Max.jpg" alt="Admin">
+        <h3>MaxBrassLoud</h3>
+        <p class="role">Administrator</p>
+        <p class="desc">Verantwortlich für Entwicklung, Moderation und Konzept des Servers.</p>
+      </div>
+
+      <div class="team-card admin">
+        <img src="img/SaSa.jpg" alt="Admin">
+        <h3>SaSaBrix</h3>
+        <p class="role">Administratorin</p>
+        <p class="desc">Verantwortlich für Organisation, Moderation und Server Hosting.</p>
+      </div>
+
+      <div class="team-card dev">
+        <img src="img/Fex.webp" alt="Developer">
+        <h3>Fexcraft3</h3>
+        <p class="role">Developer</p>
+        <p class="desc">Entwicklung von Plugins und Serverfunktionen.</p>
+      </div>
+
+      <div class="team-card mod">
+        <img src="img/Souly.jpg" alt="Moderator">
+        <h3>Soulyfrost</h3>
+        <p class="role">Moderator</p>
+        <p class="desc">Moderation, Hilfe bei Regelverstößen, Ansprechpartner für Spieler.</p>
+      </div>
+
+    </div>
+  </main>
+
+  <footer>
+    <p>© 2025 SaMaCraft | Designed by MaxBrassLoud</p>
+  </footer>
+</body>
+</html>
