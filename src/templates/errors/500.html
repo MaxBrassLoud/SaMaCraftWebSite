@@ -1,0 +1,33 @@
+{% extends "errors/base_error.html" %}
+
+{% block title %}500 – Serverfehler{% endblock %}
+
+{% block glow_color %}rgba(248,113,113,0.12){% endblock %}
+{% block code_gradient %}#f87171 0%, #fb923c 100%{% endblock %}
+{% block code_shadow %}rgba(248,113,113,0.35){% endblock %}
+
+{% block pixel_decos %}
+<div class="pixel-deco" style="background:#f87171;bottom:15%;left:18%;animation-duration:7s;animation-delay:0s;"></div>
+<div class="pixel-deco" style="background:#fb923c;bottom:25%;left:30%;animation-duration:9s;animation-delay:2s;"></div>
+<div class="pixel-deco" style="background:#f87171;bottom:10%;right:20%;animation-duration:8s;animation-delay:1s;"></div>
+<div class="pixel-deco" style="background:#fb923c;bottom:35%;right:15%;animation-duration:6s;animation-delay:3s;"></div>
+{% endblock %}
+
+{% block error_code %}500{% endblock %}
+{% block error_icon %}💥{% endblock %}
+{% block error_title %}Interner Serverfehler{% endblock %}
+{% block error_desc %}
+  Unser Server ist auf ein unerwartetes Problem gestoßen und konnte deine Anfrage nicht verarbeiten.
+  Das Team wurde automatisch benachrichtigt – wir kümmern uns darum.
+{% endblock %}
+
+{% block extra_action %}
+  <button class="btn btn-ghost" onclick="location.reload()">🔄 Neu laden</button>
+{% endblock %}
+
+{% block extra_box %}
+  <div class="error-info-box">
+    <strong>Was kann ich tun?</strong><br>
+    Versuche die Seite in ein paar Minuten erneut aufzurufen. Falls der Fehler bestehen bleibt, melde ihn bitte auf Discord mit einer kurzen Beschreibung, was du gemacht hast.
+  </div>
+{% endblock %}

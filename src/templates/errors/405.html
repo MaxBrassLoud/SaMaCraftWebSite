@@ -1,0 +1,27 @@
+{% extends "errors/base_error.html" %}
+
+{% block title %}405 – Methode nicht erlaubt{% endblock %}
+
+{% block glow_color %}rgba(96,165,250,0.1){% endblock %}
+{% block code_gradient %}#60a5fa 0%, #818cf8 100%{% endblock %}
+{% block code_shadow %}rgba(96,165,250,0.3){% endblock %}
+
+{% block pixel_decos %}
+<div class="pixel-deco" style="background:#60a5fa;bottom:15%;left:18%;animation-duration:7s;animation-delay:0s;"></div>
+<div class="pixel-deco" style="background:#818cf8;bottom:25%;left:30%;animation-duration:9s;animation-delay:2s;"></div>
+<div class="pixel-deco" style="background:#60a5fa;bottom:10%;right:20%;animation-duration:8s;animation-delay:1s;"></div>
+<div class="pixel-deco" style="background:#818cf8;bottom:35%;right:15%;animation-duration:6s;animation-delay:3s;"></div>
+{% endblock %}
+
+{% block error_code %}405{% endblock %}
+{% block error_icon %}🚫{% endblock %}
+{% block error_title %}Methode nicht erlaubt{% endblock %}
+{% block error_desc %}
+  Diese HTTP-Methode ist für die aufgerufene URL nicht zulässig. Bitte verwende die richtige Methode oder rufe die Seite normal auf.
+{% endblock %}
+
+{% block extra_box %}
+  <div class="error-info-box">
+    <strong>Für Entwickler:</strong> Prüfe ob du GET, POST oder eine andere HTTP-Methode verwendest. Diese Ressource akzeptiert nicht alle Methoden.
+  </div>
+{% endblock %}

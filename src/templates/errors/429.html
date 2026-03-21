@@ -1,0 +1,27 @@
+{% extends "errors/base_error.html" %}
+
+{% block title %}429 – Zu viele Anfragen{% endblock %}
+
+{% block glow_color %}rgba(192,132,252,0.1){% endblock %}
+{% block code_gradient %}#c084fc 0%, #f472b6 100%{% endblock %}
+{% block code_shadow %}rgba(192,132,252,0.3){% endblock %}
+
+{% block pixel_decos %}
+<div class="pixel-deco" style="background:#c084fc;bottom:15%;left:18%;animation-duration:7s;animation-delay:0s;"></div>
+<div class="pixel-deco" style="background:#f472b6;bottom:25%;left:30%;animation-duration:9s;animation-delay:2s;"></div>
+<div class="pixel-deco" style="background:#c084fc;bottom:10%;right:20%;animation-duration:8s;animation-delay:1s;"></div>
+<div class="pixel-deco" style="background:#f472b6;bottom:35%;right:15%;animation-duration:6s;animation-delay:3s;"></div>
+{% endblock %}
+
+{% block error_code %}429{% endblock %}
+{% block error_icon %}⏱️{% endblock %}
+{% block error_title %}Zu viele Anfragen{% endblock %}
+{% block error_desc %}
+  Du hast in kurzer Zeit zu viele Anfragen gesendet. Warte kurz und versuche es dann erneut.
+{% endblock %}
+
+{% block extra_box %}
+  <div class="error-info-box">
+    <strong>Rate Limiting aktiv.</strong> Bitte warte einen Moment bevor du die Seite neu lädst. Falls das Problem anhält, wende dich auf Discord an uns.
+  </div>
+{% endblock %}

@@ -1,0 +1,28 @@
+{% extends "errors/base_error.html" %}
+
+{% block title %}400 – Ungültige Anfrage{% endblock %}
+
+{% block glow_color %}rgba(250,204,21,0.1){% endblock %}
+{% block code_gradient %}#facc15 0%, #fb923c 100%{% endblock %}
+{% block code_shadow %}rgba(250,204,21,0.3){% endblock %}
+
+{% block pixel_decos %}
+<div class="pixel-deco" style="background:#facc15;bottom:15%;left:18%;animation-duration:7s;animation-delay:0s;"></div>
+<div class="pixel-deco" style="background:#fb923c;bottom:25%;left:30%;animation-duration:9s;animation-delay:2s;"></div>
+<div class="pixel-deco" style="background:#facc15;bottom:10%;right:20%;animation-duration:8s;animation-delay:1s;"></div>
+<div class="pixel-deco" style="background:#fb923c;bottom:35%;right:15%;animation-duration:6s;animation-delay:3s;"></div>
+{% endblock %}
+
+{% block error_code %}400{% endblock %}
+{% block error_icon %}⚠️{% endblock %}
+{% block error_title %}Ungültige Anfrage{% endblock %}
+{% block error_desc %}
+  Der Server konnte deine Anfrage nicht verarbeiten, weil sie fehlerhaft oder unvollständig war.
+  Überprüfe die URL und versuche es erneut.
+{% endblock %}
+
+{% block extra_box %}
+  <div class="error-info-box">
+    <strong>Tipp:</strong> Prüfe ob die URL korrekt ist. Falls du ein Formular ausgefüllt hast, gehe zurück und überprüfe deine Eingaben.
+  </div>
+{% endblock %}

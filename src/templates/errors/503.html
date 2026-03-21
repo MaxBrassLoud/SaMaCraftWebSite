@@ -1,0 +1,37 @@
+{% extends "errors/base_error.html" %}
+
+{% block title %}503 – Wartung{% endblock %}
+
+{% block glow_color %}rgba(45,212,191,0.1){% endblock %}
+{% block code_gradient %}#2dd4bf 0%, #60a5fa 100%{% endblock %}
+{% block code_shadow %}rgba(45,212,191,0.3){% endblock %}
+
+{% block pixel_decos %}
+<div class="pixel-deco" style="background:#2dd4bf;bottom:15%;left:18%;animation-duration:7s;animation-delay:0s;"></div>
+<div class="pixel-deco" style="background:#60a5fa;bottom:25%;left:30%;animation-duration:9s;animation-delay:2s;"></div>
+<div class="pixel-deco" style="background:#2dd4bf;bottom:10%;right:20%;animation-duration:8s;animation-delay:1s;"></div>
+<div class="pixel-deco" style="background:#60a5fa;bottom:35%;right:15%;animation-duration:6s;animation-delay:3s;"></div>
+{% endblock %}
+
+{% block error_code %}503{% endblock %}
+{% block error_icon %}🔧{% endblock %}
+{% block error_title %}Wartungsarbeiten{% endblock %}
+{% block error_desc %}
+  Die Website ist gerade für kurze Wartungsarbeiten offline. Wir sind bald wieder da –
+  aktuelle Infos findest du auf unserem Discord.
+{% endblock %}
+
+{% block extra_action %}
+  <button class="btn btn-ghost" onclick="location.reload()">🔄 Erneut prüfen</button>
+{% endblock %}
+
+{% block extra_box %}
+  <div class="error-info-box" style="text-align:center">
+    <strong>🛠️ Server-Wartung aktiv</strong><br>
+    Folge uns auf Discord für Updates zum Zeitplan. Danke für deine Geduld!
+    <br><br>
+    <a href="https://discord.gg/E3ZHhWyfMG" target="_blank" style="color:var(--accent);font-weight:600">
+      → discord.gg/E3ZHhWyfMG
+    </a>
+  </div>
+{% endblock %}

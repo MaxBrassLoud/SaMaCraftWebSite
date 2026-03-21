@@ -1,0 +1,28 @@
+{% extends "errors/base_error.html" %}
+
+{% block title %}403 – Kein Zugriff{% endblock %}
+
+{% block glow_color %}rgba(251,146,60,0.12){% endblock %}
+{% block code_gradient %}#fb923c 0%, #f87171 100%{% endblock %}
+{% block code_shadow %}rgba(251,146,60,0.3){% endblock %}
+
+{% block pixel_decos %}
+<div class="pixel-deco" style="background:#fb923c;bottom:15%;left:18%;animation-duration:7s;animation-delay:0s;"></div>
+<div class="pixel-deco" style="background:#f87171;bottom:25%;left:30%;animation-duration:9s;animation-delay:2s;"></div>
+<div class="pixel-deco" style="background:#fb923c;bottom:10%;right:20%;animation-duration:8s;animation-delay:1s;"></div>
+<div class="pixel-deco" style="background:#f87171;bottom:35%;right:15%;animation-duration:6s;animation-delay:3s;"></div>
+{% endblock %}
+
+{% block error_code %}403{% endblock %}
+{% block error_icon %}🔒{% endblock %}
+{% block error_title %}Zugriff verweigert{% endblock %}
+{% block error_desc %}
+  Du hast keine Berechtigung, diese Seite aufzurufen. Dieser Bereich ist nur für autorisierte Nutzer zugänglich.
+{% endblock %}
+
+{% block extra_box %}
+  <div class="error-info-box">
+    <strong>Warum sehe ich das?</strong><br>
+    Dieser Bereich ist geschützt. Falls du denkst, dass du Zugriff haben solltest, wende dich bitte über Discord an einen Administrator.
+  </div>
+{% endblock %}

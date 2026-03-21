@@ -1,0 +1,26 @@
+{% extends "errors/base_error.html" %}
+
+{% block title %}404 – Seite nicht gefunden{% endblock %}
+
+{% block glow_color %}rgba(74,222,128,0.1){% endblock %}
+{% block code_gradient %}var(--accent) 0%, #2dd4bf 100%{% endblock %}
+{% block code_shadow %}rgba(74,222,128,0.3){% endblock %}
+
+{% block error_code %}404{% endblock %}
+{% block error_icon %}🗺️{% endblock %}
+{% block error_title %}Seite nicht gefunden{% endblock %}
+{% block error_desc %}
+  Diese Seite existiert nicht – vielleicht wurde sie gelöscht, umbenannt oder du hast dich im Pfad verirrt.
+  Wie in Minecraft: manchmal muss man neu navigieren.
+{% endblock %}
+
+{% block extra_action %}
+  <a href="/news" class="btn btn-ghost">📰 News</a>
+{% endblock %}
+
+{% block extra_box %}
+  <div class="error-info-box">
+    <strong>Aufgerufene URL:</strong> <code style="color:var(--accent);font-size:0.95em">{{ request.path }}</code><br>
+    Falls du glaubst, dass diese Seite existieren sollte, melde es bitte auf Discord.
+  </div>
+{% endblock %}
