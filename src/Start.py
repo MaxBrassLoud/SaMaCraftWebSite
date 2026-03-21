@@ -20,7 +20,7 @@ def run_flask():
     from app import app
 
     host  = os.getenv("FLASK_HOST",  "0.0.0.0")
-    port  = int(os.getenv("FLASK_PORT",  "5000"))
+    port  = int(os.getenv("FLASK_PORT",  "8880"))
     debug = os.getenv("FLASK_DEBUG", "false").lower() == "true"
 
     print(f"🌐 Flask startet auf http://{host}:{port}  (debug={debug})")
