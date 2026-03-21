@@ -3,135 +3,437 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>SaMaCraft – Wie man beitritt</title>
+  <title>SaMaCraft – Beitreten</title>
   <link rel="stylesheet" href="/static/style.css">
-  <script defer src="/static/script.js"></script>
+  <script src="/static/script.js" defer></script>
+  <style>
+    .join-hero { padding: 56px 0 48px; }
+    .join-hero h1 { font-size: clamp(1.8em, 5vw, 2.8em); margin-bottom: 6px; }
+    .join-hero p  { color: var(--text2); max-width: 520px; }
+
+    /* Quick connect */
+    .quick-connect {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-xl);
+      padding: 28px 32px;
+      margin-bottom: 52px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 24px;
+      flex-wrap: wrap;
+    }
+    .qc-left .qc-label { font-size: 0.68em; text-transform: uppercase; letter-spacing: 1.8px; color: var(--text3); font-weight: 600; margin-bottom: 3px; }
+    .qc-ip {
+      font-family: 'Exo 2', sans-serif;
+      font-size: 2em;
+      font-weight: 900;
+      color: var(--accent);
+      letter-spacing: -0.5px;
+      line-height: 1;
+      margin-bottom: 10px;
+    }
+    .qc-meta { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; }
+    .qc-right { display: flex; flex-direction: column; gap: 10px; align-items: flex-end; }
+    .refresh-link {
+      background: none;
+      border: none;
+      font-size: 0.75em;
+      color: var(--text3);
+      cursor: pointer;
+      font-family: 'DM Sans', sans-serif;
+      text-decoration: underline dotted;
+      padding: 0;
+      transition: color var(--trans);
+    }
+    .refresh-link:hover { color: var(--accent); }
+
+    /* Steps */
+    .steps { display: flex; flex-direction: column; padding-bottom: 80px; }
+
+    .step {
+      display: grid;
+      grid-template-columns: 60px 1fr;
+      gap: 0 20px;
+      position: relative;
+    }
+    .step:not(:last-child)::before {
+      content: '';
+      position: absolute;
+      left: 29px;
+      top: 64px;
+      bottom: 0;
+      width: 2px;
+      background: linear-gradient(to bottom, var(--accent-dim), var(--border));
+      opacity: 0.6;
+    }
+
+    .step-num {
+      width: 60px; height: 60px;
+      border-radius: 50%;
+      background: var(--surface);
+      border: 2px solid var(--border2);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: 'Exo 2', sans-serif;
+      font-weight: 900;
+      font-size: 1.2em;
+      color: var(--text2);
+      flex-shrink: 0;
+      position: relative;
+      z-index: 1;
+      margin-top: 16px;
+      transition: border-color var(--trans), color var(--trans);
+    }
+    .step-num.accent {
+      border-color: var(--accent);
+      color: var(--accent);
+      box-shadow: 0 0 0 6px var(--accent-glow);
+    }
+    .step-num.done {
+      border-color: var(--accent);
+      background: var(--accent);
+      color: #000;
+      font-size: 1.4em;
+    }
+
+    .step-body { padding: 18px 0 36px; }
+    .step-title {
+      font-family: 'Exo 2', sans-serif;
+      font-size: 1.15em;
+      font-weight: 800;
+      color: var(--text);
+      margin: 0 0 12px;
+      padding-top: 12px;
+    }
+
+    .step-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 20px 24px;
+      transition: box-shadow var(--trans);
+    }
+    .step-card:hover { box-shadow: var(--shadow); }
+    .step-card p { font-size: 0.92em; color: var(--text2); line-height: 1.7; margin: 0 0 10px; }
+    .step-card p:last-child { margin-bottom: 0; }
+    .step-card ol, .step-card ul { padding-left: 20px; margin: 0; font-size: 0.92em; color: var(--text2); }
+    .step-card li { margin-bottom: 6px; line-height: 1.65; }
+    .step-card code {
+      background: var(--bg3);
+      padding: 1px 6px;
+      border-radius: 5px;
+      font-size: 0.9em;
+      color: var(--accent);
+      font-family: 'Courier New', monospace;
+    }
+
+    /* Info grid */
+    .info-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      margin-top: 14px;
+    }
+    .info-item {
+      background: var(--bg2);
+      border-radius: var(--radius);
+      padding: 10px 14px;
+      border-left: 3px solid var(--accent);
+    }
+    .info-item .ik { font-size: 0.68em; text-transform: uppercase; letter-spacing: 1.2px; color: var(--text3); font-weight: 700; }
+    .info-item .iv { font-weight: 700; font-size: 0.93em; color: var(--text); margin-top: 2px; }
+
+    /* Discord block */
+    .discord-block {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      background: #5865f214;
+      border: 1px solid #5865f228;
+      border-radius: var(--radius);
+      padding: 14px 18px;
+      margin-top: 14px;
+    }
+    .discord-block p { margin: 0; font-size: 0.91em; color: var(--text2); }
+    .discord-block a { color: #5865f2; font-weight: 600; }
+    .discord-block svg { flex-shrink: 0; }
+
+    /* Tip list */
+    .tip-list { display: flex; flex-direction: column; gap: 8px; }
+    .tip-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      padding: 10px 14px;
+      border-radius: var(--radius);
+      background: var(--bg2);
+      border: 1px solid var(--border);
+      font-size: 0.91em;
+      color: var(--text2);
+      line-height: 1.6;
+    }
+    .tip-item a { color: var(--accent); font-weight: 600; }
+
+    /* Problem table */
+    .problem-table { width: 100%; border-collapse: collapse; font-size: 0.9em; }
+    .problem-table th, .problem-table td {
+      padding: 10px 14px;
+      border: 1px solid var(--border);
+      text-align: left;
+      vertical-align: top;
+      color: var(--text2);
+    }
+    .problem-table th {
+      background: var(--bg2);
+      font-weight: 700;
+      color: var(--accent);
+      font-size: 0.78em;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+    .problem-table tr:nth-child(even) td { background: color-mix(in srgb, var(--bg2) 50%, transparent); }
+
+    /* Finish */
+    .finish-card { text-align: center; padding: 32px 24px; }
+    .finish-card .fi { font-size: 2.5em; margin-bottom: 10px; }
+    .finish-card p { color: var(--text2); font-size: 0.95em; }
+    .finish-card a { color: var(--accent); font-weight: 600; }
+
+    @media (max-width: 600px) {
+      .quick-connect { padding: 20px; }
+      .qc-right { align-items: flex-start; }
+      .info-grid { grid-template-columns: 1fr; }
+      .step { grid-template-columns: 46px 1fr; gap: 0 14px; }
+      .step-num { width: 46px; height: 46px; font-size: 1em; }
+      .step:not(:last-child)::before { left: 22px; }
+    }
+  </style>
 </head>
 <body>
-  <header>
-    <div class="logo">SaMaCraft</div>
-    <nav>
-      <button onclick="location.href='/'" class="nav-btn">Startseite</button>
-      <button onclick="location.href='/rules.html'" class="nav-btn">Regelwerk</button>
-      <button onclick="location.href='/team.html'" class="nav-btn">Team</button>
-      <button onclick="location.href='/news'" class="nav-btn">Neuigkeiten</button>
-      <button onclick="location.href='/join.html'" class="nav-btn active">Beitreten</button>
+
+  <header id="header">
+    <a href="/" class="header-logo"><span class="logo-dot"></span>SaMaCraft</a>
+    <nav class="header-nav">
+      <a href="/"           class="nav-link"><span class="nav-icon">🏠</span>Start</a>
+      <a href="/rules.html" class="nav-link"><span class="nav-icon">📋</span>Regelwerk</a>
+      <a href="/team.html"  class="nav-link"><span class="nav-icon">👥</span>Team</a>
+      <a href="/news"       class="nav-link"><span class="nav-icon">📰</span>News</a>
+      <a href="/join.html"  class="nav-link active"><span class="nav-icon">🎮</span>Beitreten</a>
     </nav>
-    <div class="right-controls">
-      <button id="hamburger" title="Menü" aria-label="Menü öffnen">
+    <div class="header-actions">
+      <button id="theme-btn" class="theme-btn" title="Theme">🌙</button>
+      <button id="hamburger-btn" class="hamburger-btn" aria-label="Menü">
         <span></span><span></span><span></span>
       </button>
-      <button id="theme-toggle" title="Theme wechseln">🌗</button>
     </div>
   </header>
 
-  <div id="mobile-nav">
-    <button onclick="location.href='/'" class="nav-btn">Startseite</button>
-    <button onclick="location.href='/rules.html'" class="nav-btn">Regelwerk</button>
-    <button onclick="location.href='/team.html'" class="nav-btn">Team</button>
-    <button onclick="location.href='/news'" class="nav-btn">Neuigkeiten</button>
-    <button onclick="location.href='/join.html'" class="nav-btn active">Beitreten</button>
+  <div id="mobile-drawer" class="mobile-drawer">
+    <a href="/"           class="nav-link"><span class="nav-icon">🏠</span>Startseite</a>
+    <a href="/rules.html" class="nav-link"><span class="nav-icon">📋</span>Regelwerk</a>
+    <a href="/team.html"  class="nav-link"><span class="nav-icon">👥</span>Team</a>
+    <a href="/news"       class="nav-link"><span class="nav-icon">📰</span>Neuigkeiten</a>
+    <a href="/join.html"  class="btn btn-primary m-join-btn active">🎮 Beitreten</a>
   </div>
 
-  <main class="intro">
-    <div class="news-container">
+  <div class="page">
+    <div class="container-sm">
 
-      <div class="news-card">
-        <h2>Willkommen</h2>
-        <p>Willkommen auf dem <strong>SaMaCraft Server</strong>! Folge diesen Schritten, um unserem Server beizutreten und direkt loszuspielen.</p>
+      <div class="join-hero">
+        <h1>🎮 Dem Server beitreten</h1>
+        <p>In wenigen Schritten auf SaMaCraft spielen. Alles was du brauchst, findest du hier.</p>
       </div>
 
-      <div class="news-card">
-        <h2>1. Voraussetzungen</h2>
-        <ul>
-          <li><strong>Minecraft Version:</strong> 1.21.8 (Java Edition)</li>
-          <li><strong>Stabile Internetverbindung</strong></li>
-        </ul>
+      <!-- Quick Connect -->
+      <div class="quick-connect">
+        <div class="qc-left">
+          <div class="qc-label">Server-Adresse</div>
+          <div class="qc-ip">mc.samacraft.de</div>
+          <div class="qc-meta">
+            <span class="badge badge-muted">☕ Java Edition</span>
+            <span class="badge badge-muted">📦 1.21.10 / 1.21.11</span>
+            <span class="badge badge-green" id="join-status-badge">
+              <span class="status-dot"></span>
+              <span id="join-status-text">Prüfe…</span>
+            </span>
+            <span class="badge badge-muted" id="join-players" style="display:none">
+              👥 <span id="join-player-num">–</span>
+            </span>
+          </div>
+        </div>
+        <div class="qc-right">
+          <button id="copy-join-btn" class="btn btn-primary" onclick="copyIP('copy-join-btn')">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+            IP kopieren
+          </button>
+          <button class="refresh-link" onclick="refreshStatus()">↻ Status aktualisieren</button>
+        </div>
       </div>
 
-      <div class="news-card">
-        <h2>2. Trete unserem Discord bei</h2>
-        <p>Um Spam zu verhindern und nur echte Spieler zuzulassen, musst du dich auf unserem Discord <strong>whitelisten</strong> lassen:</p>
-        <p><a href="https://discord.gg/E3ZHhWyfMG" target="_blank">SaMaCraft Discord</a></p>
-      </div>
+      <!-- Steps -->
+      <div class="steps">
 
-      <div class="news-card">
-        <h2>3. Minecraft starten</h2>
-        <ol>
-          <li>Starte den <strong>Minecraft Launcher</strong>.</li>
-          <li>Wähle die <strong>Java Edition</strong> aus.</li>
-          <li>Stelle sicher, dass die Version <strong>1.21.8</strong> installiert und aktiv ist.</li>
-          <li>Klicke auf <strong>Spielen</strong>.</li>
-        </ol>
-      </div>
+        <div class="step">
+          <div class="step-num accent">1</div>
+          <div class="step-body">
+            <div class="step-title">Voraussetzungen prüfen</div>
+            <div class="step-card">
+              <p>Stelle sicher, dass du folgende Voraussetzungen erfüllst:</p>
+              <div class="info-grid">
+                <div class="info-item"><div class="ik">Edition</div><div class="iv">Minecraft Java</div></div>
+                <div class="info-item"><div class="ik">Version</div><div class="iv">1.21.10 oder 1.21.11</div></div>
+                <div class="info-item"><div class="ik">Account</div><div class="iv">Offizieller Mojang-Account</div></div>
+                <div class="info-item"><div class="ik">Verbindung</div><div class="iv">Stabile Internetverbindung</div></div>
+              </div>
+            </div>
+          </div>
+        </div>
 
-      <div class="news-card">
-        <h2>4. Server beitreten</h2>
-        <ol>
-          <li>Gehe im Hauptmenü auf <strong>Mehrspieler</strong>.</li>
-          <li>Klicke auf <strong>Server hinzufügen</strong>.</li>
-          <li>Fülle die Felder aus:</li>
-        </ol>
-        <ul>
-          <li><strong>Servername:</strong> SaMaCraft</li>
-          <li><strong>Serveradresse:</strong> <code>samacraft.de</code></li>
-        </ul>
-        <ol start="4">
-          <li>Klicke auf <strong>Fertig</strong>.</li>
-          <li>Wähle den Server aus der Liste und klicke auf <strong>Beitreten</strong>.</li>
-        </ol>
-      </div>
+        <div class="step">
+          <div class="step-num accent">2</div>
+          <div class="step-body">
+            <div class="step-title">Discord beitreten & Whitelist</div>
+            <div class="step-card">
+              <p>Um Spam zu verhindern, ist eine <strong style="color:var(--text)">Whitelist</strong> aktiv. Du musst dich zuerst auf unserem Discord anmelden lassen.</p>
+              <div class="discord-block">
+                <svg width="36" height="36" viewBox="0 0 24 24" fill="#5865f2"><path d="M20.317 4.37a19.791 19.791 0 0 0-4.885-1.515.074.074 0 0 0-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 0 0-5.487 0 12.64 12.64 0 0 0-.617-1.25.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057.1 18.08.118 18.1.135 18.11a19.9 19.9 0 0 0 5.993 3.03.078.078 0 0 0 .084-.028c.462-.63.874-1.295 1.226-1.994a.076.076 0 0 0-.041-.106 13.107 13.107 0 0 1-1.872-.892.077.077 0 0 1-.008-.128 10.2 10.2 0 0 0 .372-.292.074.074 0 0 1 .077-.01c3.928 1.793 8.18 1.793 12.062 0a.074.074 0 0 1 .078.01c.12.098.246.198.373.292a.077.077 0 0 1-.006.127 12.299 12.299 0 0 1-1.873.892.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028 19.839 19.839 0 0 0 6.002-3.03.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.03zM8.02 15.33c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.956-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.956 2.418-2.157 2.418zm7.975 0c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.955-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.946 2.418-2.157 2.418z"/></svg>
+                <p>Tritt unserem Discord bei und melde dich für die Whitelist an: <a href="https://discord.gg/E3ZHhWyfMG" target="_blank">discord.gg/E3ZHhWyfMG</a></p>
+              </div>
+            </div>
+          </div>
+        </div>
 
-      <div class="news-card">
-        <h2>5. Tipps für neue Spieler</h2>
-        <ul>
-          <li>Lies zuerst die <strong>Serverregeln</strong>, um Probleme zu vermeiden.</li>
-          <li>Nutze <code>/spawn</code>, falls du dich verlaufen hast.</li>
-          <li>Respektiere andere Spieler – Fairplay macht mehr Spaß!</li>
-          <li>Erkunde den Server und entdecke spannende Gebäude und Events.</li>
-        </ul>
-      </div>
+        <div class="step">
+          <div class="step-num accent">3</div>
+          <div class="step-body">
+            <div class="step-title">Minecraft starten</div>
+            <div class="step-card">
+              <ol>
+                <li>Starte den <strong style="color:var(--text)">Minecraft Launcher</strong>.</li>
+                <li>Stelle sicher, dass die <strong style="color:var(--text)">Java Edition</strong> ausgewählt ist.</li>
+                <li>Wähle Version <strong style="color:var(--text)">1.21.10 oder 1.21.11</strong> – installiere sie falls nötig über „Installationen".</li>
+                <li>Klicke auf <strong style="color:var(--text)">Spielen</strong>.</li>
+              </ol>
+            </div>
+          </div>
+        </div>
 
-      <div class="news-card">
-        <h2>6. Häufige Probleme</h2>
-        <table>
-          <thead>
-            <tr>
-              <th>Problem</th>
-              <th>Lösung</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td>Verbindung fehlgeschlagen</td>
-              <td>Überprüfe die Serveradresse und deine Internetverbindung.</td>
-            </tr>
-            <tr>
-              <td>Falsche Minecraft-Version</td>
-              <td>Stelle sicher, dass du Version <strong>1.21.8</strong> benutzt.</td>
-            </tr>
-            <tr>
-              <td>Account nicht erkannt</td>
-              <td>Starte Minecraft neu und prüfe deine Anmeldung.</td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
+        <div class="step">
+          <div class="step-num accent">4</div>
+          <div class="step-body">
+            <div class="step-title">Server hinzufügen & beitreten</div>
+            <div class="step-card">
+              <ol>
+                <li>Klicke im Hauptmenü auf <strong style="color:var(--text)">Mehrspieler</strong>.</li>
+                <li>Klicke auf <strong style="color:var(--text)">Server hinzufügen</strong> und fülle ein:</li>
+              </ol>
+              <div class="info-grid" style="margin-top:12px">
+                <div class="info-item"><div class="ik">Servername</div><div class="iv">SaMaCraft</div></div>
+                <div class="info-item"><div class="ik">Serveradresse</div><div class="iv">mc.samacraft.de</div></div>
+              </div>
+              <ol start="3" style="margin-top:12px">
+                <li>Klicke <strong style="color:var(--text)">Fertig</strong>, wähle den Server und klicke <strong style="color:var(--text)">Beitreten</strong>.</li>
+              </ol>
+            </div>
+          </div>
+        </div>
 
-      <div class="news-card">
-        <h2>7. Support</h2>
-        <p>Bei weiteren Fragen oder Problemen erreichst du uns auf Discord: <a href="https://discord.gg/E3ZHhWyfMG" target="_blank">SaMaCraft Discord</a></p>
-      </div>
+        <div class="step">
+          <div class="step-num accent">5</div>
+          <div class="step-body">
+            <div class="step-title">Tipps für neue Spieler</div>
+            <div class="step-card">
+              <div class="tip-list">
+                <div class="tip-item">📖 <span>Lies zuerst das <a href="/rules.html">Regelwerk</a> – damit vermeidest du Probleme von Anfang an.</span></div>
+                <div class="tip-item">🏠 <span>Nutze <code>/spawn</code>, falls du dich verlaufen hast.</span></div>
+                <div class="tip-item">🤝 <span>Respektiere andere Spieler – Fairplay macht mehr Spaß!</span></div>
+                <div class="tip-item">🗺️ <span>Erkunde den Server und entdecke spannende Gebäude und Events.</span></div>
+                <div class="tip-item">💬 <span>Fragen? Melde dich auf <a href="https://discord.gg/E3ZHhWyfMG" target="_blank">Discord</a>.</span></div>
+              </div>
+            </div>
+          </div>
+        </div>
 
-      <div class="news-card">
-        <p>Viel Spaß auf dem <strong>SaMaCraft Server</strong>! 🎮</p>
-      </div>
+        <div class="step">
+          <div class="step-num">?</div>
+          <div class="step-body">
+            <div class="step-title">Häufige Probleme</div>
+            <div class="step-card">
+              <table class="problem-table">
+                <thead><tr><th>Problem</th><th>Lösung</th></tr></thead>
+                <tbody>
+                  <tr><td>Verbindung schlägt fehl</td><td>Adresse prüfen: <code>mc.samacraft.de</code> – Internetverbindung testen.</td></tr>
+                  <tr><td>Falsche Version</td><td>Version <strong>1.21.10 / 1.21.11</strong> im Launcher auswählen.</td></tr>
+                  <tr><td>Nicht auf Whitelist</td><td>Erst auf <a href="https://discord.gg/E3ZHhWyfMG" target="_blank">Discord</a> anmelden → Schritt 2.</td></tr>
+                  <tr><td>Account nicht erkannt</td><td>Launcher neu starten, Anmeldung prüfen.</td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
 
+        <div class="step">
+          <div class="step-num done">✓</div>
+          <div class="step-body">
+            <div class="step-title">Bereit!</div>
+            <div class="step-card finish-card">
+              <div class="fi">🎮</div>
+              <p>Du bist startklar. Wir freuen uns auf dich auf <strong style="color:var(--text)">SaMaCraft</strong>!<br>Fragen? Jederzeit auf <a href="https://discord.gg/E3ZHhWyfMG" target="_blank">Discord</a>.</p>
+            </div>
+          </div>
+        </div>
+
+      </div><!-- /steps -->
     </div>
-  </main>
+  </div>
 
-  <footer>
-    <p>© 2025 SaMaCraft | Designed by MaxBrassLoud</p>
+  <footer id="footer">
+    <div class="footer-inner">
+      <div class="footer-logo"><span class="logo-dot"></span>SaMaCraft</div>
+      <div class="footer-links">
+        <a href="/">Startseite</a><a href="/rules.html">Regelwerk</a>
+        <a href="/team.html">Team</a><a href="/news">News</a>
+        <a href="/join.html">Beitreten</a>
+        <a href="https://discord.gg/E3ZHhWyfMG" target="_blank">Discord</a>
+      </div>
+      <span class="footer-copy">© 2025 SaMaCraft · Designed by MaxBrassLoud</span>
+    </div>
   </footer>
+
+  <script>
+    async function refreshStatus() {
+      const badge   = document.getElementById('join-status-badge');
+      const text    = document.getElementById('join-status-text');
+      const players = document.getElementById('join-players');
+      const pNum    = document.getElementById('join-player-num');
+      badge.className = 'badge badge-muted';
+      text.textContent = 'Prüfe…';
+      players.style.display = 'none';
+      try {
+        const res  = await fetch('https://api.mcsrvstat.us/3/mc.samacraft.de');
+        const data = await res.json();
+        if (data.online) {
+          badge.className = 'badge badge-green';
+          const dot = badge.querySelector('.status-dot');
+          if (dot) dot.classList.add('online');
+          text.textContent = 'Online';
+          const on = data.players?.online ?? 0, mx = data.players?.max ?? 0;
+          pNum.textContent = `${on} / ${mx}`;
+          players.style.display = '';
+        } else {
+          badge.className = 'badge badge-red';
+          text.textContent = 'Offline';
+        }
+      } catch {
+        badge.className = 'badge badge-muted';
+        text.textContent = 'Unbekannt';
+      }
+    }
+    refreshStatus();
+    setInterval(refreshStatus, 60_000);
+  </script>
 </body>
 </html>

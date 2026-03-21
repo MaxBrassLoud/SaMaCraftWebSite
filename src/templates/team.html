@@ -5,72 +5,237 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>SaMaCraft – Team</title>
   <link rel="stylesheet" href="/static/style.css">
-  <script defer src="/static/script.js"></script>
+  <script src="/static/script.js" defer></script>
+  <style>
+    .team-hero { padding: 56px 0 40px; }
+    .team-hero h1 { font-size: clamp(1.8em, 5vw, 2.8em); margin-bottom: 6px; }
+    .team-hero p  { color: var(--text2); font-size: 1em; max-width: 540px; }
+
+    /* Search */
+    .team-search { max-width: 360px; margin: 0 0 40px; }
+
+    /* Section label */
+    .team-section-label {
+      grid-column: 1 / -1;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 0.72em;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      color: var(--text3);
+      padding: 4px 0 8px;
+      border-bottom: 1px solid var(--border);
+      margin-bottom: 4px;
+    }
+
+    /* Grid */
+    .team-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(210px, 1fr));
+      gap: 16px;
+      padding-bottom: 80px;
+    }
+
+    /* Card */
+    .team-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 28px 20px 22px;
+      text-align: center;
+      transition: transform var(--trans), box-shadow var(--trans);
+      position: relative;
+      overflow: hidden;
+    }
+    .team-card::after {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 3px;
+      background: var(--rc, var(--accent));
+    }
+    .team-card:hover { transform: translateY(-5px); box-shadow: var(--shadow-lg); }
+
+    /* Avatar */
+    .avatar-wrap {
+      position: relative;
+      width: 80px; height: 80px;
+      margin: 0 auto 14px;
+    }
+    .avatar-wrap img {
+      width: 80px; height: 80px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 2px solid var(--border2);
+    }
+    .avatar-badge {
+      position: absolute;
+      bottom: -2px; right: -2px;
+      width: 24px; height: 24px;
+      border-radius: 50%;
+      background: var(--rc, var(--accent));
+      border: 2px solid var(--surface);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.72em;
+      z-index: 1;
+    }
+
+    .team-card h3 {
+      font-size: 1.1em;
+      font-weight: 800;
+      color: var(--text);
+      margin: 0 0 3px;
+    }
+    .team-card .role {
+      font-size: 0.72em;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: var(--rc, var(--accent));
+      margin-bottom: 10px;
+      display: block;
+    }
+    .team-card .desc {
+      font-size: 0.84em;
+      color: var(--text2);
+      line-height: 1.5;
+      margin: 0;
+    }
+
+    /* No results */
+    .team-no-results {
+      grid-column: 1/-1;
+      text-align: center;
+      padding: 48px;
+      color: var(--text3);
+      display: none;
+    }
+    .team-no-results.visible { display: block; }
+
+    @media (max-width: 600px) {
+      .team-grid { grid-template-columns: 1fr 1fr; gap: 12px; }
+      .team-card { padding: 22px 14px 18px; }
+      .avatar-wrap img, .avatar-wrap { width: 64px; height: 64px; }
+      .team-card .desc { display: none; }
+    }
+    @media (max-width: 380px) { .team-grid { grid-template-columns: 1fr; } }
+  </style>
 </head>
 <body>
-  <header>
-    <div class="logo">SaMaCraft</div>
-    <nav>
-      <button onclick="location.href='/'" class="nav-btn">Startseite</button>
-      <button onclick="location.href='/rules.html'" class="nav-btn">Regelwerk</button>
-      <button onclick="location.href='/team.html'" class="nav-btn active">Team</button>
-      <button onclick="location.href='/news'" class="nav-btn">Neuigkeiten</button>
-      <button onclick="location.href='/join.html'" class="nav-btn">Beitreten</button>
+
+  <header id="header">
+    <a href="/" class="header-logo"><span class="logo-dot"></span>SaMaCraft</a>
+    <nav class="header-nav">
+      <a href="/"           class="nav-link"><span class="nav-icon">🏠</span>Start</a>
+      <a href="/rules.html" class="nav-link"><span class="nav-icon">📋</span>Regelwerk</a>
+      <a href="/team.html"  class="nav-link active"><span class="nav-icon">👥</span>Team</a>
+      <a href="/news"       class="nav-link"><span class="nav-icon">📰</span>News</a>
+      <a href="/join.html"  class="nav-link"><span class="nav-icon">🎮</span>Beitreten</a>
     </nav>
-    <div class="right-controls">
-      <button id="hamburger" title="Menü" aria-label="Menü öffnen">
+    <div class="header-actions">
+      <button id="theme-btn" class="theme-btn" title="Theme">🌙</button>
+      <button id="hamburger-btn" class="hamburger-btn" aria-label="Menü">
         <span></span><span></span><span></span>
       </button>
-      <button id="theme-toggle" title="Theme wechseln">🌗</button>
     </div>
   </header>
 
-  <div id="mobile-nav">
-    <button onclick="location.href='/'" class="nav-btn">Startseite</button>
-    <button onclick="location.href='/rules.html'" class="nav-btn">Regelwerk</button>
-    <button onclick="location.href='/team.html'" class="nav-btn active">Team</button>
-    <button onclick="location.href='/news'" class="nav-btn">Neuigkeiten</button>
-    <button onclick="location.href='/join.html'" class="nav-btn">Beitreten</button>
+  <div id="mobile-drawer" class="mobile-drawer">
+    <a href="/"           class="nav-link"><span class="nav-icon">🏠</span>Startseite</a>
+    <a href="/rules.html" class="nav-link"><span class="nav-icon">📋</span>Regelwerk</a>
+    <a href="/team.html"  class="nav-link active"><span class="nav-icon">👥</span>Team</a>
+    <a href="/news"       class="nav-link"><span class="nav-icon">📰</span>Neuigkeiten</a>
+    <a href="/join.html"  class="btn btn-primary m-join-btn">🎮 Beitreten</a>
   </div>
 
-  <main class="content">
-    <h2>Unser Team</h2>
-    <p>Das SaMaCraft-Team sorgt für einen fairen, freundlichen und spannenden Serverbetrieb. Hier findest du alle aktuellen Teammitglieder.</p>
+  <div class="page">
+    <div class="container">
 
-    <div class="team-grid">
-      <div class="team-card admin">
-        <img src="img/Max.jpg" alt="Admin">
-        <h3>MaxBrassLoud</h3>
-        <p class="role">Administrator</p>
-        <p class="desc">Verantwortlich für Entwicklung, Moderation und Konzept des Servers.</p>
+      <div class="team-hero">
+        <h1>👥 Unser Team</h1>
+        <p>Das SaMaCraft-Team sorgt für einen fairen, freundlichen und spannenden Serverbetrieb.</p>
       </div>
 
-      <div class="team-card admin">
-        <img src="img/SaSa.jpg" alt="Admin">
-        <h3>SaSaBrix</h3>
-        <p class="role">Administratorin</p>
-        <p class="desc">Verantwortlich für Organisation, Moderation und Server Hosting.</p>
+      <div class="team-search">
+        <div class="input-wrap">
+          <svg class="input-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+          <input type="search" id="team-search" placeholder="Teammitglied suchen…">
+        </div>
       </div>
 
-      <div class="team-card dev">
-        <img src="img/Fex.webp" alt="Developer">
-        <h3>Fexcraft3</h3>
-        <p class="role">Developer</p>
-        <p class="desc">Entwicklung von Plugins und Serverfunktionen.</p>
-      </div>
+      <div class="team-grid">
 
-      <div class="team-card mod">
-        <img src="img/Souly.jpg" alt="Moderator">
-        <h3>Soulyfrost</h3>
-        <p class="role">Moderator</p>
-        <p class="desc">Moderation, Hilfe bei Regelverstößen, Ansprechpartner für Spieler.</p>
-      </div>
+        <div class="team-section-label">👑 Administration</div>
 
+        <div class="team-card" style="--rc:#f87171" data-name="maxbrassloud" data-role="administrator">
+          <div class="avatar-wrap">
+            <img src="img/Max.jpg" alt="MaxBrassLoud">
+            <div class="avatar-badge">👑</div>
+          </div>
+          <h3>MaxBrassLoud</h3>
+          <span class="role">Administrator</span>
+          <p class="desc">Verantwortlich für Entwicklung, Moderation und Konzept des Servers.</p>
+        </div>
+
+        <div class="team-card" style="--rc:#f87171" data-name="sasabrix" data-role="administratorin">
+          <div class="avatar-wrap">
+            <img src="img/SaSa.jpg" alt="SaSaBrix">
+            <div class="avatar-badge">👑</div>
+          </div>
+          <h3>SaSaBrix</h3>
+          <span class="role">Administratorin</span>
+          <p class="desc">Verantwortlich für Organisation, Moderation und Server Hosting.</p>
+        </div>
+
+        <div class="team-section-label">💻 Entwicklung</div>
+
+        <div class="team-card" style="--rc:#2dd4bf" data-name="fexcraft3" data-role="developer">
+          <div class="avatar-wrap">
+            <img src="img/Fex.webp" alt="Fexcraft3">
+            <div class="avatar-badge">💻</div>
+          </div>
+          <h3>Fexcraft3</h3>
+          <span class="role">Developer</span>
+          <p class="desc">Entwicklung von Plugins und Serverfunktionen.</p>
+        </div>
+
+        <div class="team-section-label">🛡️ Moderation</div>
+
+        <div class="team-card" style="--rc:#60a5fa" data-name="soulyfrost" data-role="moderator">
+          <div class="avatar-wrap">
+            <img src="img/Souly.jpg" alt="Soulyfrost">
+            <div class="avatar-badge">🛡️</div>
+          </div>
+          <h3>Soulyfrost</h3>
+          <span class="role">Moderator</span>
+          <p class="desc">Moderation, Hilfe bei Regelverstößen, Ansprechpartner für Spieler.</p>
+        </div>
+
+        <div class="team-no-results" id="team-no-results">
+          <div style="font-size:2em;margin-bottom:8px">🔍</div>
+          Kein Teammitglied gefunden.
+        </div>
+
+      </div>
     </div>
-  </main>
+  </div>
 
-  <footer>
-    <p>© 2025 SaMaCraft | Designed by MaxBrassLoud</p>
+  <footer id="footer">
+    <div class="footer-inner">
+      <div class="footer-logo"><span class="logo-dot"></span>SaMaCraft</div>
+      <div class="footer-links">
+        <a href="/">Startseite</a><a href="/rules.html">Regelwerk</a>
+        <a href="/team.html">Team</a><a href="/news">News</a>
+        <a href="/join.html">Beitreten</a>
+        <a href="https://discord.gg/E3ZHhWyfMG" target="_blank">Discord</a>
+      </div>
+      <span class="footer-copy">© 2025 SaMaCraft · Designed by MaxBrassLoud</span>
+    </div>
   </footer>
+
 </body>
 </html>

@@ -5,267 +5,220 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>SaMaCraft – Neuigkeiten</title>
   <link rel="stylesheet" href="/static/style.css">
-  <script defer src="/static/script.js"></script>
+  <script src="/static/script.js" defer></script>
   <style>
-    /* Filter-Bar */
-    .news-filter-bar {
-      max-width: 900px;
-      margin: 20px auto 0;
-      padding: 0 16px;
+    .news-hero { padding: 56px 0 40px; }
+    .news-hero h1 { font-size: clamp(1.8em, 5vw, 2.8em); margin-bottom: 6px; }
+    .news-hero p  { color: var(--text2); font-size: 1em; }
+
+    /* Filter row */
+    .filter-row {
       display: flex;
       gap: 8px;
       flex-wrap: wrap;
       align-items: center;
+      margin-bottom: 32px;
     }
     .filter-btn {
-      font-size: 0.8em;
-      padding: 5px 14px;
+      padding: 6px 16px;
       border-radius: 20px;
-      background: var(--sidebar-bg);
-      color: var(--text);
-      border: 1px solid var(--border);
-      box-shadow: none;
+      font-size: 0.8em;
       font-weight: 600;
+      border: 1px solid var(--border2);
+      background: var(--surface);
+      color: var(--text2);
+      cursor: pointer;
+      transition: all var(--trans);
+      font-family: 'DM Sans', sans-serif;
       text-transform: uppercase;
       letter-spacing: 0.4px;
-      transition: background 0.2s, color 0.2s, border-color 0.2s;
     }
-    .filter-btn:hover, .filter-btn.active {
-      background: var(--accent);
-      color: white;
-      border-color: var(--accent);
-      transform: none;
-      box-shadow: 0 2px 8px rgba(30,144,255,0.3);
-    }
-    .filter-btn[data-type="update"].active   { background: #ff9800; border-color: #ff9800; }
-    .filter-btn[data-type="changelog"].active{ background: #2196f3; border-color: #2196f3; }
-    .filter-btn[data-type="event"].active    { background: #8e24aa; border-color: #8e24aa; }
-    .filter-btn[data-type="alert"].active    { background: #e53935; border-color: #e53935; }
-    .filter-btn[data-type="info"].active     { background: #00897b; border-color: #00897b; }
+    .filter-btn:hover { border-color: var(--accent); color: var(--accent); background: var(--accent-glow); }
+    .filter-btn.active { color: #000; border-color: transparent; }
+    .filter-btn[data-type="all"].active     { background: var(--accent); }
+    .filter-btn[data-type="update"].active   { background: #fb923c; }
+    .filter-btn[data-type="changelog"].active{ background: #60a5fa; }
+    .filter-btn[data-type="event"].active    { background: #c084fc; }
+    .filter-btn[data-type="info"].active     { background: #2dd4bf; }
+    .filter-btn[data-type="alert"].active    { background: #f87171; }
 
-    /* Download-Button im News-Card */
-    .download-btn {
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      margin-top: 14px;
-      font-size: 0.82em;
-      padding: 7px 14px;
-      background: var(--sidebar-bg);
-      color: var(--accent);
-      border: 1px solid var(--accent);
-      box-shadow: none;
-      border-radius: 8px;
-      font-weight: 700;
-      transition: background 0.2s, color 0.2s;
-    }
-    .download-btn:hover {
-      background: var(--accent);
-      color: white;
-      transform: none;
-      box-shadow: 0 2px 8px rgba(30,144,255,0.3);
-    }
-    .download-btn svg {
-      flex-shrink: 0;
-    }
-
-    /* No-results */
-    .no-results {
-      text-align: center;
-      padding: 60px 20px;
-      color: var(--muted);
-      display: none;
-    }
-    .no-results.visible { display: block; }
-
-    /* News-Count Badge */
-    .news-count {
-      font-size: 0.85em;
-      color: var(--muted);
+    .filter-count {
       margin-left: auto;
+      font-size: 0.82em;
+      color: var(--text3);
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 4px 12px;
     }
 
-    /* Fade-in für Cards */
+    /* News feed */
+    .news-feed { display: flex; flex-direction: column; gap: 16px; padding-bottom: 80px; }
+
     .news-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 24px 28px;
+      border-left: 4px solid transparent;
+      transition: transform var(--trans), box-shadow var(--trans), border-color var(--trans);
       animation: fadeUp 0.3s ease both;
     }
-    @keyframes fadeUp {
-      from { opacity: 0; transform: translateY(12px); }
-      to   { opacity: 1; transform: translateY(0); }
-    }
-    .news-card.hidden { display: none; }
+    .news-card:hover { transform: translateY(-2px); box-shadow: var(--shadow-lg); }
+    .news-card[data-type="update"]    { border-left-color: #fb923c; }
+    .news-card[data-type="changelog"] { border-left-color: #60a5fa; }
+    .news-card[data-type="event"]     { border-left-color: #c084fc; }
+    .news-card[data-type="alert"]     { border-left-color: #f87171; }
+    .news-card[data-type="info"]      { border-left-color: #2dd4bf; }
 
-    /* Typ-spezifische Akzentfarben */
-    .news-card[data-type="update"]    { border-left-color: #ff9800; }
-    .news-card[data-type="changelog"] { border-left-color: #2196f3; }
-    .news-card[data-type="event"]     { border-left-color: #8e24aa; }
-    .news-card[data-type="alert"]     { border-left-color: #e53935; }
-    .news-card[data-type="info"]      { border-left-color: #00897b; }
+    .news-card-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 12px;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+    .news-card h2 {
+      font-size: 1.35em;
+      font-weight: 800;
+      color: var(--text);
+      margin-bottom: 10px;
+      line-height: 1.2;
+    }
+    .news-card p { font-size: 0.93em; color: var(--text2); line-height: 1.7; margin: 0; }
+    .news-date { font-size: 0.82em; color: var(--text3); }
+
+    .download-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      margin-top: 16px;
+      padding: 8px 16px;
+      border-radius: var(--radius);
+      background: var(--surface2);
+      border: 1px solid var(--border2);
+      color: var(--accent);
+      font-size: 0.84em;
+      font-weight: 600;
+      text-decoration: none;
+      transition: all var(--trans);
+    }
+    .download-link:hover { background: var(--accent-glow); border-color: var(--accent); text-decoration: none; }
+
+    .no-news {
+      text-align: center;
+      padding: 64px 20px;
+      color: var(--text3);
+      display: none;
+      font-size: 0.95em;
+    }
+    .no-news.visible { display: block; }
+    .no-news-icon { font-size: 2.5em; margin-bottom: 12px; }
+
+    mark {
+      background: color-mix(in srgb, #facc15 30%, transparent);
+      color: var(--text);
+      border-radius: 3px;
+      padding: 0 2px;
+    }
   </style>
 </head>
 <body>
-  <header>
-    <div class="logo">SaMaCraft</div>
-    <nav>
-      <button onclick="location.href='/'" class="nav-btn">Startseite</button>
-      <button onclick="location.href='/rules.html'" class="nav-btn">Regelwerk</button>
-      <button onclick="location.href='/team.html'" class="nav-btn">Team</button>
-      <button onclick="location.href='/news'" class="nav-btn active">Neuigkeiten</button>
-      <button onclick="location.href='/join.html'" class="nav-btn">Beitreten</button>
+
+  <header id="header">
+    <a href="/" class="header-logo"><span class="logo-dot"></span>SaMaCraft</a>
+    <nav class="header-nav">
+      <a href="/"           class="nav-link"><span class="nav-icon">🏠</span>Start</a>
+      <a href="/rules.html" class="nav-link"><span class="nav-icon">📋</span>Regelwerk</a>
+      <a href="/team.html"  class="nav-link"><span class="nav-icon">👥</span>Team</a>
+      <a href="/news"       class="nav-link active"><span class="nav-icon">📰</span>News</a>
+      <a href="/join.html"  class="nav-link"><span class="nav-icon">🎮</span>Beitreten</a>
     </nav>
-    <div class="right-controls">
-      <button id="theme-toggle" title="Theme wechseln">🌗</button>
-      <button class="hamburger" aria-label="Menü öffnen">
+    <div class="header-actions">
+      <button id="theme-btn" class="theme-btn" title="Theme">🌙</button>
+      <button id="hamburger-btn" class="hamburger-btn" aria-label="Menü">
         <span></span><span></span><span></span>
       </button>
     </div>
   </header>
 
-  <div class="mobile-nav">
-    <button onclick="location.href='/'" class="nav-btn">Startseite</button>
-    <button onclick="location.href='/rules.html'" class="nav-btn">Regelwerk</button>
-    <button onclick="location.href='/team.html'" class="nav-btn">Team</button>
-    <button onclick="location.href='/news'" class="nav-btn active">Neuigkeiten</button>
-    <button onclick="location.href='/join.html'" class="nav-btn">Beitreten</button>
+  <div id="mobile-drawer" class="mobile-drawer">
+    <a href="/"           class="nav-link"><span class="nav-icon">🏠</span>Startseite</a>
+    <a href="/rules.html" class="nav-link"><span class="nav-icon">📋</span>Regelwerk</a>
+    <a href="/team.html"  class="nav-link"><span class="nav-icon">👥</span>Team</a>
+    <a href="/news"       class="nav-link active"><span class="nav-icon">📰</span>Neuigkeiten</a>
+    <a href="/join.html"  class="btn btn-primary m-join-btn">🎮 Beitreten</a>
   </div>
 
-  <main style="padding-top: 80px;">
-    <!-- Filter-Bar -->
-    <div class="news-filter-bar">
-      <button class="filter-btn active" data-type="all">Alle</button>
-      <button class="filter-btn" data-type="update">Update</button>
-      <button class="filter-btn" data-type="changelog">Changelog</button>
-      <button class="filter-btn" data-type="event">Event</button>
-      <button class="filter-btn" data-type="info">Info</button>
-      <button class="filter-btn" data-type="alert">Warnung</button>
-      <span class="news-count" id="news-count"></span>
-    </div>
+  <div class="page">
+    <div class="container-sm">
 
-    <!-- News werden hier per JS eingefügt -->
-    <div class="news-container" id="news-container">
-      <div style="text-align:center; padding: 60px 20px; color: var(--muted);">
-        Lade Neuigkeiten…
+      <div class="news-hero">
+        <h1>📰 Neuigkeiten</h1>
+        <p>Updates, Events und Ankündigungen rund um SaMaCraft.</p>
       </div>
-    </div>
 
-    <div class="no-results" id="no-results">
-      Keine Neuigkeiten in dieser Kategorie gefunden.
-    </div>
-  </main>
+      <!-- Filter -->
+      <div class="filter-row">
+        <button class="filter-btn active" data-type="all">Alle</button>
+        <button class="filter-btn" data-type="update">🔄 Update</button>
+        <button class="filter-btn" data-type="changelog">📋 Changelog</button>
+        <button class="filter-btn" data-type="event">🎉 Event</button>
+        <button class="filter-btn" data-type="info">ℹ️ Info</button>
+        <button class="filter-btn" data-type="alert">⚠️ Warnung</button>
+        <span class="filter-count" id="news-count"></span>
+      </div>
 
-  <footer>
-    <p>© 2025 SaMaCraft | Designed by MaxBrassLoud</p>
+      <!-- Feed – server-side rendered by Flask -->
+      <div class="news-feed">
+        {% set TYPE_LABELS = {'update':'Update','changelog':'Changelog','event':'Event','info':'Info','alert':'⚠️ Warnung'} %}
+        {% set TYPE_BADGE  = {'update':'badge-orange','changelog':'badge-blue','event':'badge-purple','info':'badge-teal','alert':'badge-red'} %}
+        {% if news_list %}
+          {% for item in news_list %}
+          <div class="news-card" id="{{ item.id }}" data-type="{{ item.type }}">
+            <div class="news-card-header">
+              <span class="badge {{ TYPE_BADGE.get(item.type,'badge-muted') }}">{{ TYPE_LABELS.get(item.type, item.type) }}</span>
+              <span class="news-date">{{ item.date }}</span>
+            </div>
+            <h2>{{ item.title }}</h2>
+            <p>{{ item.content }}</p>
+            {% if item.download %}
+            <a class="download-link" href="/api/news/download/{{ item.download.file }}" download>
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+              {{ item.download.label }}
+            </a>
+            {% endif %}
+          </div>
+          {% endfor %}
+        {% else %}
+          <div style="text-align:center;padding:60px 0;color:var(--text3)">
+            <div style="font-size:2.5em;margin-bottom:12px">📭</div>
+            Noch keine Neuigkeiten vorhanden.
+          </div>
+        {% endif %}
+      </div>
+
+      <div class="no-news" id="news-no-results">
+        <div class="no-news-icon">🔍</div>
+        Keine Einträge in dieser Kategorie.
+      </div>
+
+    </div>
+  </div>
+
+  <footer id="footer">
+    <div class="footer-inner">
+      <div class="footer-logo"><span class="logo-dot"></span>SaMaCraft</div>
+      <div class="footer-links">
+        <a href="/">Startseite</a><a href="/rules.html">Regelwerk</a>
+        <a href="/team.html">Team</a><a href="/news">News</a>
+        <a href="/join.html">Beitreten</a>
+        <a href="https://discord.gg/E3ZHhWyfMG" target="_blank">Discord</a>
+      </div>
+      <span class="footer-copy">© 2025 SaMaCraft · Designed by MaxBrassLoud</span>
+    </div>
   </footer>
 
-  <script>
-    // ─── News laden ────────────────────────────────────────────────────────────
-    const TYPE_LABELS = {
-      update:    { label: "Update",    color: "#ff9800" },
-      changelog: { label: "Changelog", color: "#2196f3" },
-      event:     { label: "Event",     color: "#8e24aa" },
-      info:      { label: "Info",      color: "#00897b" },
-      alert:     { label: "⚠️ Warnung", color: "#e53935" },
-    };
-
-    function formatDate(dateStr) {
-      const d = new Date(dateStr);
-      return d.toLocaleDateString("de-DE", { day: "numeric", month: "long", year: "numeric" });
-    }
-
-    function buildDownloadBtn(download) {
-      if (!download) return "";
-      return `
-        <a href="/api/news/download/${encodeURIComponent(download.file)}"
-           class="download-btn"
-           download>
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none"
-               stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
-            <polyline points="7 10 12 15 17 10"/>
-            <line x1="12" y1="15" x2="12" y2="3"/>
-          </svg>
-          ${download.label}
-        </a>`;
-    }
-
-    function buildCard(item) {
-      const typeInfo = TYPE_LABELS[item.type] || { label: item.type, color: "#888" };
-      const card = document.createElement("div");
-      card.className = "news-card";
-      card.dataset.type = item.type;
-      if (item.id) card.id = item.id;
-
-      card.innerHTML = `
-        <div class="news-header">
-          <span class="tag" style="background:${typeInfo.color}">${typeInfo.label}</span>
-          <span class="date">${formatDate(item.date)}</span>
-        </div>
-        <h2>${item.title}</h2>
-        <p>${item.content}</p>
-        ${buildDownloadBtn(item.download)}
-      `;
-      return card;
-    }
-
-    let allNews = [];
-
-    async function loadNews() {
-      const container = document.getElementById("news-container");
-      try {
-        const res = await fetch("/api/news");
-        if (!res.ok) throw new Error("Fehler beim Laden");
-        allNews = await res.json();
-        renderNews("all");
-      } catch (e) {
-        container.innerHTML = `<div style="text-align:center;padding:40px;color:var(--muted)">
-          Neuigkeiten konnten nicht geladen werden.<br><small>${e.message}</small>
-        </div>`;
-      }
-    }
-
-    function renderNews(filter) {
-      const container = document.getElementById("news-container");
-      const noResults = document.getElementById("no-results");
-      const countEl = document.getElementById("news-count");
-      container.innerHTML = "";
-
-      const filtered = filter === "all"
-        ? allNews
-        : allNews.filter(n => n.type === filter);
-
-      if (filtered.length === 0) {
-        noResults.classList.add("visible");
-        countEl.textContent = "";
-      } else {
-        noResults.classList.remove("visible");
-        countEl.textContent = `${filtered.length} Eintra${filtered.length === 1 ? "g" : "äge"}`;
-        filtered.forEach((item, i) => {
-          const card = buildCard(item);
-          card.style.animationDelay = `${i * 60}ms`;
-          container.appendChild(card);
-        });
-      }
-
-      // Anchor aus URL öffnen (z.B. news.html#Start)
-      const hash = location.hash.slice(1);
-      if (hash) {
-        setTimeout(() => {
-          const el = document.getElementById(hash);
-          if (el) el.scrollIntoView({ behavior: "smooth", block: "start" });
-        }, 100);
-      }
-    }
-
-    // ─── Filter-Buttons ────────────────────────────────────────────────────────
-    document.querySelectorAll(".filter-btn").forEach(btn => {
-      btn.addEventListener("click", () => {
-        document.querySelectorAll(".filter-btn").forEach(b => b.classList.remove("active"));
-        btn.classList.add("active");
-        renderNews(btn.dataset.type);
-      });
-    });
-
-    loadNews();
-  </script>
 </body>
 </html>
